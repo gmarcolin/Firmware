@@ -81,8 +81,6 @@ Airspeed::~Airspeed()
 		unregister_class_devname(AIRSPEED_BASE_DEVICE_PATH, _class_instance);
 	}
 
-	orb_unadvertise(_airspeed_pub);
-
 	// free perf counters
 	perf_free(_sample_perf);
 	perf_free(_comms_errors);
@@ -101,15 +99,11 @@ Airspeed::init()
 
 	/* advertise sensor topic, measure manually to initialize valid report */
 	measure();
-	differential_pressure_s arp = {};
+	differential_pressure_s arp{};
+	arp.timestamp = hrt_absolute_time();
 
 	/* measurement will have generated a report, publish */
-	_airspeed_pub = orb_advertise_multi(ORB_ID(differential_pressure), &arp, &_airspeed_orb_class_instance,
-					    ORB_PRIO_HIGH - _class_instance);
-
-	if (_airspeed_pub == nullptr) {
-		PX4_WARN("uORB started?");
-	}
+	_airspeed_pub.publish(arp);
 
 	return PX4_OK;
 }
