@@ -115,7 +115,7 @@ void update_parameters(const ParameterHandles &parameter_handles, Parameters &pa
 	param_get(parameter_handles.air_tube_length, &parameters.air_tube_length);
 	param_get(parameter_handles.air_tube_diameter_mm, &parameters.air_tube_diameter_mm);
 
-	param_get(parameter_hanles.imu_dgyro_en, &parameters.imu_dgyro_en);
+	param_get(parameter_handles.imu_dgyro_en, &parameters.imu_dgyro_en);
 
 }
 
